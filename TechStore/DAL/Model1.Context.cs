@@ -30,7 +30,7 @@ namespace TechStore.DAL
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<MemberRole> MemberRoles { get; set; }
         public virtual DbSet<Member> Members { get; set; }
-        public virtual DbSet<Product> Product { get; set; }
+        public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<ShippingDetail> ShippingDetails { get; set; }
         public virtual DbSet<SlideImage> SlideImages { get; set; }

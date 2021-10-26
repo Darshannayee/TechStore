@@ -17,13 +17,6 @@ namespace TechStore.Controllers
             return View(model.CreateModel(search, 4, page));
         }
 
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
         public ActionResult Location()
         {
             ViewBag.Message = "Your contact page.";
@@ -35,7 +28,7 @@ namespace TechStore.Controllers
         {
             if (Session["cart"] == null) { 
             List<Item> cart = new List<Item>();
-            var pd = cntx.Product.Find(productId);
+            var pd = cntx.Products.Find(productId);
             cart.Add(new Item() {
                 products = pd,
                 Quantity = 1
@@ -44,7 +37,7 @@ namespace TechStore.Controllers
         }
         else{
                 List<Item> cart = (List<Item>)Session["cart"];
-                var pd = cntx.Product.Find(productId);
+                var pd = cntx.Products.Find(productId);
                 foreach(var item in cart)
                 {
                     if (item.products.ProductId == productId)
@@ -103,7 +96,7 @@ namespace TechStore.Controllers
             if(Session["cart"] != null)
             {
                 List<Item> cart = (List<Item>)Session["cart"];
-                var pd = cntx.Product.Find(productId);
+                var pd = cntx.Products.Find(productId);
                 foreach(var item in cart)
                 {
                     if (item.products.ProductId == productId)
@@ -123,7 +116,50 @@ namespace TechStore.Controllers
                 }
                 Session["cart"] = cart;
             }
-            return Redirect("Checkout");
+            return View("Checkout");
+        }
+        public ActionResult AddQuantity(int productId)
+        {
+            if (Session["cart"] == null)
+            {
+                List<Item> cart = new List<Item>();
+                var pd = cntx.Products.Find(productId);
+                cart.Add(new Item()
+                {
+                    products = pd,
+                    Quantity = 1
+                });
+                Session["cart"] = cart;
+            }
+            else
+            {
+                List<Item> cart = (List<Item>)Session["cart"];
+                var pd = cntx.Products.Find(productId);
+                foreach (var item in cart)
+                {
+                    if (item.products.ProductId == productId)
+                    {
+                        int pqty = item.Quantity;
+                        cart.Remove(item);
+                        cart.Add(new Item()
+                        {
+                            products = pd,
+                            Quantity = pqty + 1
+                        });
+                    }
+                    else
+                    {
+                        cart.Add(new Item()
+                        {
+                            products = pd,
+                            Quantity = 1
+                        });
+                    }
+                    break;
+                }
+                Session["cart"] = cart;
+            }
+            return View("Checkout");
         }
     }
 }
