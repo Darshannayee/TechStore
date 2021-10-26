@@ -1,0 +1,6 @@
+.vs
+TechStore/obj
+TechStore/obj
+bin
+obj/*
+packages
